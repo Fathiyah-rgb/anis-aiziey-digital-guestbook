@@ -1,0 +1,203 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * ============================================================
+ *  WEDDING THEME — change these 6 values to re-theme the app.
+ *  Everything else (buttons, cards, headings, ornaments) reads
+ *  from these variables.
+ * ============================================================
+ */
+:root {
+  --wedding-navy: #14213d; /* Headings & dark surfaces */
+  --wedding-royal: #2747a8; /* Buttons & links */
+  --wedding-royal-hover: #1e3a8f;
+  --wedding-cream: #faf5ea; /* Page background */
+  --wedding-ivory: #fffdf8; /* Cards */
+  --wedding-gold: #c9a96a; /* Accents & ornaments */
+  --wedding-white: #ffffff;
+}
+
+@theme inline {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), ui-serif, Georgia, serif;
+
+  --color-navy: var(--wedding-navy);
+  --color-royal: var(--wedding-royal);
+  --color-royal-hover: var(--wedding-royal-hover);
+  --color-cream: var(--wedding-cream);
+  --color-ivory: var(--wedding-ivory);
+  --color-gold: var(--wedding-gold);
+
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  color-scheme: light;
+  --background: var(--wedding-cream);
+  --foreground: var(--wedding-navy);
+  --card: var(--wedding-ivory);
+  --card-foreground: var(--wedding-navy);
+  --popover: var(--wedding-white);
+  --popover-foreground: var(--wedding-navy);
+  --primary: var(--wedding-royal);
+  --primary-foreground: var(--wedding-white);
+  --secondary: color-mix(in oklab, var(--wedding-gold) 18%, var(--wedding-ivory));
+  --secondary-foreground: var(--wedding-navy);
+  --muted: color-mix(in oklab, var(--wedding-gold) 10%, var(--wedding-cream));
+  --muted-foreground: color-mix(in oklab, var(--wedding-navy) 65%, var(--wedding-cream));
+  --accent: color-mix(in oklab, var(--wedding-gold) 22%, var(--wedding-ivory));
+  --accent-foreground: var(--wedding-navy);
+  --destructive: #b42318;
+  --border: color-mix(in oklab, var(--wedding-gold) 35%, var(--wedding-cream));
+  --input: color-mix(in oklab, var(--wedding-gold) 45%, var(--wedding-cream));
+  --ring: var(--wedding-royal);
+  --radius: 1rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+@layer utilities {
+  .shadow-soft {
+    box-shadow:
+      0 1px 2px color-mix(in oklab, var(--wedding-navy) 6%, transparent),
+      0 12px 32px -12px color-mix(in oklab, var(--wedding-navy) 18%, transparent);
+  }
+  .bg-pattern {
+    background-image:
+      radial-gradient(
+        circle at 1px 1px,
+        color-mix(in oklab, var(--wedding-gold) 28%, transparent) 1px,
+        transparent 0
+      );
+    background-size: 22px 22px;
+  }
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+.animate-sway {
+  transform-origin: top center;
+  animation: sway 5s ease-in-out infinite;
+}
+
+@keyframes ty-plane-in {
+  from {
+    opacity: 0;
+    transform: translate(-36px, 28px) rotate(-8deg);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0);
+  }
+}
+
+@keyframes ty-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes ty-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ty-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ty-sparkle {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+}
+
+.ty-plane {
+  animation: ty-plane-in 1.1s cubic-bezier(0.22, 1, 0.36, 1) 150ms both;
+}
+.ty-float {
+  animation: ty-float 4s ease-in-out 1.3s infinite;
+}
+.ty-rise {
+  animation: ty-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.ty-fade {
+  animation: ty-fade 0.9s ease-out 900ms both;
+}
+.ty-sparkle {
+  animation: ty-sparkle 0.7s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-sway,
+  .ty-plane,
+  .ty-float,
+  .ty-rise,
+  .ty-fade,
+  .ty-sparkle {
+    animation: none;
+  }
+}
