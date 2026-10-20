@@ -1,3 +1,4 @@
+
 import 'server-only'
 import { createClient } from '@supabase/supabase-js'
 import type { GuestbookEntry, Relationship } from './types'
@@ -67,7 +68,7 @@ export async function createPendingEntry(
     photoUrl = publicUrlData.publicUrl
   }
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('wedding_guestbook')
     .insert({
       guest_name: input.guest_name,
@@ -76,13 +77,21 @@ export async function createPendingEntry(
       photo_url: photoUrl,
       status: 'pending',
     })
-    .select()
-    .single()
 
   if (error) {
     console.error('Error creating guestbook entry:', error)
     throw new Error('Failed to submit guestbook entry.')
   }
 
-  return data as GuestbookEntry
+  // INSERT succeeded. The pending entry cannot be read
+  // through the public SELECT policy.
+  return {
+    id: crypto.randomUUID(),
+    created_at: new Date().toISOString(),
+    guest_name: input.guest_name,
+    relationship: input.relationship,
+    doa: input.doa,
+    photo_url: photoUrl,
+    status: 'pending',
+  } as GuestbookEntry
 }
