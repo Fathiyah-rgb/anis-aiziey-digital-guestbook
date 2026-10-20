@@ -1,9 +1,14 @@
+
 'use client'
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Camera, Quote } from 'lucide-react'
-import { RELATIONSHIPS, type GuestbookEntry, type Relationship } from '@/lib/guestbook/types'
+import { Camera, Quote, Heart } from 'lucide-react'
+import {
+  RELATIONSHIPS,
+  type GuestbookEntry,
+  type Relationship,
+} from '@/lib/guestbook/types'
 import { primaryButton } from './button-styles'
 import { cn } from '@/lib/utils'
 
@@ -19,19 +24,31 @@ const dateFormatter = new Intl.DateTimeFormat('ms-MY', {
   timeZone: 'Asia/Kuala_Lumpur',
 })
 
-export function LiveGallery({ entries }: { entries: GuestbookEntry[] }) {
+export function LiveGallery({
+  entries,
+}: {
+  entries: GuestbookEntry[]
+}) {
   const [active, setActive] = useState<Filter>('Semua')
-  const visible = active === 'Semua' ? entries : entries.filter((entry) => entry.relationship === active)
+
+  const visible =
+    active === 'Semua'
+      ? entries
+      : entries.filter(
+          (entry) => entry.relationship === active
+        )
 
   return (
-    <div>
+    <section className="relative">
+      {/* Category Filters */}
       <div
         role="group"
         aria-label="Tapis mengikut hubungan"
-        className="-mx-5 mb-6 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] sm:flex-wrap sm:justify-center"
+        className="-mx-5 mb-7 flex gap-2 overflow-x-auto px-5 pb-2 [scrollbar-width:none] sm:flex-wrap sm:justify-center"
       >
         {FILTERS.map((filter) => {
           const isActive = active === filter
+
           return (
             <button
               key={filter}
@@ -39,10 +56,11 @@ export function LiveGallery({ entries }: { entries: GuestbookEntry[] }) {
               onClick={() => setActive(filter)}
               aria-pressed={isActive}
               className={cn(
-                'min-h-11 shrink-0 rounded-full border px-5 py-2.5 text-[15px] font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-royal',
+                'min-h-10 shrink-0 rounded-full border px-4 py-2 text-xs font-medium whitespace-nowrap shadow-sm transition-all duration-200 sm:text-sm',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-royal',
                 isActive
-                  ? 'border-navy bg-navy text-white'
-                  : 'border-border bg-ivory text-navy/80 hover:border-gold hover:text-navy',
+                  ? 'border-gold bg-navy text-white shadow-md'
+                  : 'border-gold/50 bg-ivory text-navy hover:border-gold hover:bg-gold/10'
               )}
             >
               {filter}
@@ -58,92 +76,146 @@ export function LiveGallery({ entries }: { entries: GuestbookEntry[] }) {
       {visible.length === 0 ? (
         <EmptyState filter={active} />
       ) : (
-        <ul className="columns-1 gap-4 sm:columns-2 lg:columns-3">
+        <ul className="columns-2 gap-2 sm:columns-3 sm:gap-4 lg:columns-4">
           {visible.map((entry) => (
-            <li key={entry.id} className="mb-4 break-inside-avoid">
+            <li
+              key={entry.id}
+              className="mb-3 break-inside-avoid sm:mb-4"
+            >
               <GuestCard entry={entry} />
             </li>
           ))}
         </ul>
       )}
-    </div>
+    </section>
   )
 }
 
-function GuestCard({ entry }: { entry: GuestbookEntry }) {
-  const hasPhoto = !!entry.photo_url
+function GuestCard({
+  entry,
+}: {
+  entry: GuestbookEntry
+}) {
+  const hasPhoto = Boolean(entry.photo_url)
 
   return (
     <article
       className={cn(
-        'overflow-hidden rounded-3xl border shadow-soft',
-        hasPhoto ? 'border-border bg-ivory' : 'border-navy bg-navy text-white',
+        'overflow-hidden rounded-2xl border shadow-soft transition-shadow duration-300 hover:shadow-lg',
+        hasPhoto
+          ? 'border-gold/50 bg-ivory'
+          : 'border-gold/50 bg-navy text-white'
       )}
     >
       {hasPhoto && (
-        <div className="p-2 pb-0">
+        <div className="p-1.5 pb-0 sm:p-2 sm:pb-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={entry.photo_url!}
             alt={`Gambar daripada ${entry.guest_name}`}
             loading="lazy"
-            className="w-full rounded-t-[999px] rounded-b-2xl object-cover"
+            className="h-auto w-full rounded-xl object-cover"
           />
         </div>
       )}
 
-      <div className="p-5">
-        {!hasPhoto && <Quote className="mb-3 size-7 fill-gold/30 text-gold" aria-hidden="true" />}
+      <div className="p-3 sm:p-4">
+        {!hasPhoto && (
+          <Quote
+            className="mb-3 size-6 fill-gold/20 text-gold"
+            aria-hidden="true"
+          />
+        )}
+
         <p
           className={cn(
-            'font-serif text-[1.375rem] leading-relaxed text-pretty',
-            hasPhoto ? 'text-navy' : 'text-white',
+            'font-serif text-sm leading-relaxed break-words whitespace-pre-wrap sm:text-lg',
+            hasPhoto ? 'text-navy' : 'text-white'
           )}
         >
           {entry.doa}
         </p>
 
-        <footer
+        <div
           className={cn(
-            'mt-5 flex items-end justify-between gap-3 border-t pt-4',
-            hasPhoto ? 'border-border' : 'border-white/15',
+            'mt-4 border-t pt-3',
+            hasPhoto
+              ? 'border-gold/30'
+              : 'border-white/20'
           )}
         >
-          <div className="min-w-0">
-            <h3 className={cn('truncate text-[17px] font-semibold', hasPhoto ? 'text-navy' : 'text-white')}>
+          <div className="flex items-start justify-between gap-1">
+            <h3
+              className={cn(
+                'min-w-0 break-words text-xs font-semibold sm:text-sm',
+                hasPhoto ? 'text-navy' : 'text-white'
+              )}
+            >
               {entry.guest_name}
             </h3>
-            <time
-              dateTime={entry.created_at}
-              className={cn('mt-0.5 block text-sm', hasPhoto ? 'text-navy/65' : 'text-white/75')}
-            >
-              {dateFormatter.format(new Date(entry.created_at))}
-            </time>
+
+            <Heart
+              className="size-4 shrink-0 text-gold"
+              aria-hidden="true"
+            />
           </div>
+
           <span
             className={cn(
-              'shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium',
-              hasPhoto ? 'bg-gold/15 text-navy' : 'bg-gold/20 text-gold',
+              'mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-medium sm:text-xs',
+              hasPhoto
+                ? 'bg-gold/15 text-navy'
+                : 'bg-white/15 text-gold'
             )}
           >
             {entry.relationship}
           </span>
-        </footer>
+
+          <time
+            dateTime={entry.created_at}
+            className={cn(
+              'mt-2 block text-[10px] leading-relaxed sm:text-xs',
+              hasPhoto
+                ? 'text-navy/60'
+                : 'text-white/70'
+            )}
+          >
+            {dateFormatter.format(
+              new Date(entry.created_at)
+            )}
+          </time>
+        </div>
       </div>
     </article>
   )
 }
 
-function EmptyState({ filter }: { filter: Filter }) {
+function EmptyState({
+  filter,
+}: {
+  filter: Filter
+}) {
   return (
-    <div className="mx-auto max-w-sm rounded-3xl border border-dashed border-gold/60 bg-ivory/70 px-6 py-12 text-center">
-      <p className="font-serif text-2xl text-navy">Belum ada kenangan</p>
+    <div className="mx-auto max-w-sm rounded-3xl border border-dashed border-gold/60 bg-ivory/90 px-6 py-12 text-center shadow-soft">
+      <Heart
+        className="mx-auto mb-4 size-8 text-gold"
+        aria-hidden="true"
+      />
+
+      <p className="font-serif text-2xl text-navy">
+        Belum ada kenangan
+      </p>
+
       <p className="mt-2 text-sm text-muted-foreground">
         {filter === 'Semua'
-          ? 'Jadilah yang pertama mengongsi momen bahagia ini.'
+          ? 'Jadilah yang pertama berkongsi momen bahagia ini.'
           : `Belum ada kenangan daripada kategori ${filter}.`}
       </p>
-      <Link href="/kongsi" className={primaryButton('mt-6 h-11 px-5 text-sm')}>
+
+      <Link
+        href="/kongsi"
+        className={primaryButton('mt-6 h-11 px-5 text-sm')}
+      >
         <Camera className="size-4" aria-hidden="true" />
         Kongsi Momen Anda
       </Link>
