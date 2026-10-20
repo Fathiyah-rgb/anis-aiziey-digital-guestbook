@@ -39,12 +39,12 @@ export function LiveGallery({
         )
 
   return (
-    <section className="relative">
+    <section className="relative w-full">
       {/* Category Filters */}
       <div
         role="group"
         aria-label="Tapis mengikut hubungan"
-        className="-mx-5 mb-7 flex gap-2 overflow-x-auto px-5 pb-2 [scrollbar-width:none] sm:flex-wrap sm:justify-center"
+        className="mb-7 flex flex-wrap justify-center gap-2"
       >
         {FILTERS.map((filter) => {
           const isActive = active === filter
@@ -56,11 +56,11 @@ export function LiveGallery({
               onClick={() => setActive(filter)}
               aria-pressed={isActive}
               className={cn(
-                'min-h-10 shrink-0 rounded-full border px-4 py-2 text-xs font-medium whitespace-nowrap shadow-sm transition-all duration-200 sm:text-sm',
+                'min-h-10 rounded-full border px-4 py-2 text-xs font-medium transition-all duration-200 sm:text-sm',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-royal',
                 isActive
                   ? 'border-gold bg-navy text-white shadow-md'
-                  : 'border-gold/50 bg-ivory text-navy hover:border-gold hover:bg-gold/10'
+                  : 'border-gold/60 bg-ivory text-navy hover:bg-gold/10'
               )}
             >
               {filter}
@@ -76,12 +76,9 @@ export function LiveGallery({
       {visible.length === 0 ? (
         <EmptyState filter={active} />
       ) : (
-        <ul className="columns-2 gap-2 sm:columns-3 sm:gap-4 lg:columns-4">
+        <ul className="mx-auto grid max-w-5xl grid-cols-1 items-start gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {visible.map((entry) => (
-            <li
-              key={entry.id}
-              className="mb-3 break-inside-avoid sm:mb-4"
-            >
+            <li key={entry.id} className="min-w-0">
               <GuestCard entry={entry} />
             </li>
           ))}
@@ -103,12 +100,12 @@ function GuestCard({
       className={cn(
         'overflow-hidden rounded-2xl border shadow-soft transition-shadow duration-300 hover:shadow-lg',
         hasPhoto
-          ? 'border-gold/50 bg-ivory'
-          : 'border-gold/50 bg-navy text-white'
+          ? 'border-gold/60 bg-ivory'
+          : 'border-gold/60 bg-navy text-white'
       )}
     >
       {hasPhoto && (
-        <div className="p-1.5 pb-0 sm:p-2 sm:pb-0">
+        <div className="p-2 pb-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={entry.photo_url!}
@@ -119,17 +116,17 @@ function GuestCard({
         </div>
       )}
 
-      <div className="p-3 sm:p-4">
+      <div className="p-5">
         {!hasPhoto && (
           <Quote
-            className="mb-3 size-6 fill-gold/20 text-gold"
+            className="mb-3 size-7 fill-gold/20 text-gold"
             aria-hidden="true"
           />
         )}
 
         <p
           className={cn(
-            'font-serif text-sm leading-relaxed break-words whitespace-pre-wrap sm:text-lg',
+            'font-serif text-lg leading-relaxed break-words whitespace-pre-wrap',
             hasPhoto ? 'text-navy' : 'text-white'
           )}
         >
@@ -138,16 +135,16 @@ function GuestCard({
 
         <div
           className={cn(
-            'mt-4 border-t pt-3',
+            'mt-5 border-t pt-4',
             hasPhoto
               ? 'border-gold/30'
               : 'border-white/20'
           )}
         >
-          <div className="flex items-start justify-between gap-1">
+          <div className="flex items-start justify-between gap-2">
             <h3
               className={cn(
-                'min-w-0 break-words text-xs font-semibold sm:text-sm',
+                'min-w-0 break-words text-sm font-semibold',
                 hasPhoto ? 'text-navy' : 'text-white'
               )}
             >
@@ -155,14 +152,14 @@ function GuestCard({
             </h3>
 
             <Heart
-              className="size-4 shrink-0 text-gold"
+              className="size-5 shrink-0 text-gold"
               aria-hidden="true"
             />
           </div>
 
           <span
             className={cn(
-              'mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-medium sm:text-xs',
+              'mt-2 inline-block rounded-full px-3 py-1 text-xs font-medium',
               hasPhoto
                 ? 'bg-gold/15 text-navy'
                 : 'bg-white/15 text-gold'
@@ -174,7 +171,7 @@ function GuestCard({
           <time
             dateTime={entry.created_at}
             className={cn(
-              'mt-2 block text-[10px] leading-relaxed sm:text-xs',
+              'mt-3 block text-xs leading-relaxed',
               hasPhoto
                 ? 'text-navy/60'
                 : 'text-white/70'
