@@ -21,28 +21,34 @@ export default async function GaleriPage() {
   const entries = await getApprovedEntries()
 
   return (
-    <PageShell showBack wide>
-      <div className="mx-auto mt-5 w-full max-w-4xl">
-        <section className="overflow-hidden rounded-t-[45%_8%] rounded-b-[2.5rem] border border-gold/70 bg-ivory shadow-soft">
+    <PageShell showBack>
+      <div className="mx-auto mt-4 w-full max-w-md">
 
-          {/* Royal Blue & Gold Header */}
-          <header
-            className="relative flex min-h-64 flex-col items-center justify-center bg-cover bg-top bg-no-repeat px-5 py-12 text-center sm:min-h-80"
+        {/* One Royal Blue & Gold Wedding Arch */}
+        <section
+          className="relative isolate overflow-hidden rounded-t-[48%_13%] rounded-b-[2rem] border border-gold/70 bg-ivory shadow-soft"
+        >
+          {/* Background wedding arch */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 bg-cover bg-top bg-no-repeat"
             style={{
               backgroundImage: `url("${archImage}")`,
             }}
-          >
-            {/* Soft background behind title */}
-            <div className="relative z-10 mx-auto w-full max-w-sm rounded-3xl border border-gold/40 bg-ivory/90 px-5 py-6 shadow-soft backdrop-blur-sm">
-              <p className="text-xs font-medium tracking-[0.3em] text-gold uppercase">
+          />
+
+          {/* Top title inside the arch */}
+          <header className="relative px-7 pt-24 pb-8 text-center">
+            <div className="mx-auto max-w-xs rounded-3xl border border-gold/40 bg-ivory/90 px-4 py-6 shadow-soft backdrop-blur-sm">
+              <p className="text-[10px] font-medium tracking-[0.3em] text-gold uppercase">
                 Anis &amp; Aiziey
               </p>
 
-              <h1 className="mt-3 font-serif text-4xl font-semibold text-navy sm:text-5xl">
+              <h1 className="mt-3 font-serif text-4xl font-semibold text-navy">
                 Live Gallery
               </h1>
 
-              <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-navy/80">
+              <p className="mt-3 text-sm leading-relaxed text-navy/80">
                 Kenangan &amp; Doa Daripada Tetamu Tersayang
               </p>
 
@@ -50,40 +56,34 @@ export default async function GaleriPage() {
             </div>
           </header>
 
-          {/* Gallery Content */}
-          <div className="relative border-x-2 border-gold/30 bg-ivory px-4 py-8 sm:px-8">
+          {/* Gallery inside the same arch */}
+          <div className="relative mx-3 rounded-3xl border border-gold/40 bg-ivory/95 px-3 py-6 shadow-soft backdrop-blur-sm sm:mx-5 sm:px-4">
             <LiveGallery entries={entries} />
 
-            {/* Share Moment */}
-            <div className="mt-10 flex justify-center">
+            <div className="mt-8 flex justify-center">
               <Link
                 href="/kongsi"
                 className={primaryButton(
-                  'h-14 w-full max-w-sm px-8 text-base'
+                  'h-12 w-full px-4 text-sm'
                 )}
               >
-                <Camera className="size-5" aria-hidden="true" />
+                <Camera className="size-4" aria-hidden="true" />
                 Kongsi Momen Anda
               </Link>
             </div>
 
-            <div className="mt-5 text-center">
+            <div className="mt-4 text-center">
               <Link
                 href="/"
-                className="inline-flex min-h-11 items-center text-sm font-medium text-navy underline decoration-gold underline-offset-4"
+                className="inline-flex min-h-11 items-center text-xs font-medium text-navy underline decoration-gold underline-offset-4"
               >
                 Kembali ke Utama
               </Link>
             </div>
           </div>
 
-          {/* Decorative Palace Footer */}
-          <div
-            className="h-24 bg-cover bg-bottom bg-no-repeat sm:h-36"
-            style={{
-              backgroundImage: `url("${archImage}")`,
-            }}
-          />
+          {/* Decorative lower arch */}
+          <div className="relative h-36 sm:h-44" />
         </section>
       </div>
     </PageShell>
