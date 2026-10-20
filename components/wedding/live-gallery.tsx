@@ -40,7 +40,7 @@ export function LiveGallery({
         )
 
   return (
-    <section className="relative w-full min-w-0">
+    <section className="relative w-full">
 
       {/* Category Filters */}
       <div
@@ -58,11 +58,11 @@ export function LiveGallery({
               onClick={() => setActive(filter)}
               aria-pressed={isActive}
               className={cn(
-                'min-h-10 rounded-full border px-3 py-2 text-xs font-medium transition-colors',
+                'min-h-10 rounded-full border px-3 py-2 text-xs font-medium transition-colors sm:px-5 sm:text-sm',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-royal',
                 isActive
-                  ? 'border-gold bg-navy text-white shadow-md'
-                  : 'border-gold/60 bg-ivory text-navy hover:bg-gold/10'
+                  ? 'border-gold bg-navy text-white'
+                  : 'border-gold/50 bg-ivory text-navy hover:border-gold hover:bg-gold/10'
               )}
             >
               {filter}
@@ -75,16 +75,12 @@ export function LiveGallery({
         {visible.length} kenangan dipaparkan
       </p>
 
-      {/* One Full-Width Card Per Row */}
       {visible.length === 0 ? (
         <EmptyState filter={active} />
       ) : (
-        <ul className="mx-auto grid w-full min-w-0 grid-cols-1 items-start gap-4">
+        <ul className="grid grid-cols-2 items-start gap-3 sm:grid-cols-3 sm:gap-5">
           {visible.map((entry) => (
-            <li
-              key={entry.id}
-              className="w-full min-w-0"
-            >
+            <li key={entry.id} className="min-w-0">
               <GuestCard entry={entry} />
             </li>
           ))}
@@ -104,48 +100,46 @@ function GuestCard({
   return (
     <article
       className={cn(
-        'w-full min-w-0 overflow-hidden rounded-2xl border shadow-soft transition-shadow duration-300 hover:shadow-lg',
+        'min-w-0 overflow-hidden rounded-2xl border shadow-soft transition-shadow duration-300 hover:shadow-lg',
         hasPhoto
-          ? 'border-gold/60 bg-ivory'
-          : 'border-gold/60 bg-navy text-white'
+          ? 'border-gold/50 bg-ivory'
+          : 'border-gold/50 bg-navy text-white'
       )}
     >
-
-      {/* Guest Photo */}
       {hasPhoto && (
         <div className="p-2 pb-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={entry.photo_url!}
-            alt={`Gambar daripada ${entry.guest_name}`}
-            loading="lazy"
-            className="h-auto w-full rounded-xl object-cover"
-          />
+          <div className="flex aspect-[3/4] w-full items-center justify-center overflow-hidden rounded-xl bg-cream">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={entry.photo_url!}
+              alt={`Gambar daripada ${entry.guest_name}`}
+              loading="lazy"
+              className="h-full w-full object-contain"
+            />
+          </div>
         </div>
       )}
 
-      {/* Guest Message */}
-      <div className="p-4 sm:p-5">
+      <div className="p-3 sm:p-4">
         {!hasPhoto && (
           <Quote
-            className="mb-3 size-7 fill-gold/20 text-gold"
+            className="mb-2 size-5 fill-gold/20 text-gold"
             aria-hidden="true"
           />
         )}
 
         <p
           className={cn(
-            'font-serif text-base leading-relaxed break-words whitespace-pre-wrap sm:text-lg',
+            'break-words whitespace-pre-wrap font-serif text-sm leading-relaxed sm:text-base',
             hasPhoto ? 'text-navy' : 'text-white'
           )}
         >
           {entry.doa}
         </p>
 
-        {/* Guest Information */}
         <div
           className={cn(
-            'mt-5 border-t pt-4',
+            'mt-3 border-t pt-3',
             hasPhoto
               ? 'border-gold/30'
               : 'border-white/20'
@@ -154,7 +148,7 @@ function GuestCard({
           <div className="flex items-start justify-between gap-2">
             <h3
               className={cn(
-                'min-w-0 break-words text-sm font-semibold',
+                'min-w-0 break-words text-xs font-semibold sm:text-sm',
                 hasPhoto ? 'text-navy' : 'text-white'
               )}
             >
@@ -162,15 +156,14 @@ function GuestCard({
             </h3>
 
             <Heart
-              className="size-5 shrink-0 text-gold"
+              className="size-4 shrink-0 text-gold"
               aria-hidden="true"
             />
           </div>
 
-          {/* Relationship */}
           <span
             className={cn(
-              'mt-2 inline-block rounded-full px-3 py-1 text-xs font-medium',
+              'mt-2 inline-block rounded-full px-2 py-1 text-[10px] font-medium sm:text-xs',
               hasPhoto
                 ? 'bg-gold/15 text-navy'
                 : 'bg-white/15 text-gold'
@@ -179,11 +172,10 @@ function GuestCard({
             {entry.relationship}
           </span>
 
-          {/* Submission Date */}
           <time
             dateTime={entry.created_at}
             className={cn(
-              'mt-3 block text-xs leading-relaxed',
+              'mt-2 block text-[10px] leading-relaxed sm:text-xs',
               hasPhoto
                 ? 'text-navy/60'
                 : 'text-white/70'
@@ -205,7 +197,7 @@ function EmptyState({
   filter: Filter
 }) {
   return (
-    <div className="mx-auto max-w-sm rounded-3xl border border-dashed border-gold/60 bg-ivory/90 px-5 py-10 text-center shadow-soft">
+    <div className="mx-auto max-w-sm rounded-3xl border border-dashed border-gold/60 bg-ivory/90 px-6 py-12 text-center shadow-soft">
       <Heart
         className="mx-auto mb-4 size-8 text-gold"
         aria-hidden="true"
@@ -215,7 +207,7 @@ function EmptyState({
         Belum ada kenangan
       </p>
 
-      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+      <p className="mt-2 text-sm text-muted-foreground">
         {filter === 'Semua'
           ? 'Jadilah yang pertama berkongsi momen bahagia ini.'
           : `Belum ada kenangan daripada kategori ${filter}.`}
