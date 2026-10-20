@@ -19,40 +19,42 @@ export default async function GaleriPage() {
 
   return (
     <PageShell showBack wide>
-      {/* Royal Blue & Gold Gallery Header */}
-      <header className="relative mx-auto mt-5 mb-8 w-full max-w-3xl overflow-hidden rounded-t-[180px] rounded-b-3xl border border-gold/60 bg-ivory shadow-soft">
-        <div
-          className="relative flex min-h-[340px] flex-col items-center justify-center bg-cover bg-center px-5 py-16 text-center sm:min-h-[430px]"
+      {/* Royal Blue & Gold Live Gallery */}
+      <div className="mx-auto mt-5 w-full max-w-md">
+        <header
+          className="relative overflow-hidden rounded-t-[48%] rounded-b-3xl border border-gold/60 bg-ivory shadow-soft"
           style={{
             backgroundImage:
               'url("/Ornate%20Blue%20Mosque%20Wedding%20Courtyard.png")',
+            backgroundSize: '100% 100%',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
           }}
         >
-          {/* Soft ivory overlay for readability */}
-          <div className="absolute inset-0 bg-ivory/55" />
-
-          <div className="relative z-10 mx-auto max-w-sm rounded-3xl bg-ivory/75 px-5 py-7 backdrop-blur-[2px]">
+          <div className="relative flex min-h-[550px] flex-col items-center px-7 pt-32 pb-12 text-center sm:min-h-[650px] sm:pt-40">
             <p className="text-xs font-medium tracking-[0.3em] text-gold uppercase">
               Anis &amp; Aiziey
             </p>
 
-            <h1 className="mt-3 font-serif text-5xl font-semibold text-navy sm:text-6xl">
+            <h1 className="mt-5 font-serif text-5xl font-semibold text-navy">
               Live Gallery
             </h1>
 
-            <p className="mx-auto mt-4 max-w-xs text-sm leading-relaxed text-navy sm:text-base">
+            <p className="mx-auto mt-5 max-w-xs text-sm leading-relaxed text-navy">
               Kenangan &amp; Doa Daripada Tetamu Tersayang
             </p>
 
-            <StarDivider className="mt-5" />
+            <StarDivider className="mt-6" />
           </div>
-        </div>
-      </header>
+        </header>
+      </div>
 
-      {/* Existing gallery and category filters */}
-      <LiveGallery entries={entries} />
+      {/* Gallery categories and approved guest entries */}
+      <div className="mt-8">
+        <LiveGallery entries={entries} />
+      </div>
 
-      {/* Share a Moment Button */}
+      {/* Share Moment */}
       <div className="pointer-events-none sticky bottom-5 mt-6 flex justify-center">
         <Link
           href="/kongsi"
