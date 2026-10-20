@@ -13,6 +13,7 @@ import { primaryButton } from './button-styles'
 import { cn } from '@/lib/utils'
 
 type Filter = 'Semua' | Relationship
+
 const FILTERS: Filter[] = ['Semua', ...RELATIONSHIPS]
 
 const dateFormatter = new Intl.DateTimeFormat('ms-MY', {
@@ -39,12 +40,13 @@ export function LiveGallery({
         )
 
   return (
-    <section className="relative w-full">
+    <section className="relative w-full min-w-0">
+
       {/* Category Filters */}
       <div
         role="group"
         aria-label="Tapis mengikut hubungan"
-        className="mb-7 flex flex-wrap justify-center gap-2"
+        className="mb-6 flex flex-wrap justify-center gap-2"
       >
         {FILTERS.map((filter) => {
           const isActive = active === filter
@@ -56,7 +58,7 @@ export function LiveGallery({
               onClick={() => setActive(filter)}
               aria-pressed={isActive}
               className={cn(
-                'min-h-10 rounded-full border px-4 py-2 text-xs font-medium transition-all duration-200 sm:text-sm',
+                'min-h-10 rounded-full border px-3 py-2 text-xs font-medium transition-colors',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-royal',
                 isActive
                   ? 'border-gold bg-navy text-white shadow-md'
@@ -73,12 +75,16 @@ export function LiveGallery({
         {visible.length} kenangan dipaparkan
       </p>
 
+      {/* One Full-Width Card Per Row */}
       {visible.length === 0 ? (
         <EmptyState filter={active} />
       ) : (
-        <ul className="mx-auto grid max-w-5xl grid-cols-1 items-start gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mx-auto grid w-full min-w-0 grid-cols-1 items-start gap-4">
           {visible.map((entry) => (
-            <li key={entry.id} className="min-w-0">
+            <li
+              key={entry.id}
+              className="w-full min-w-0"
+            >
               <GuestCard entry={entry} />
             </li>
           ))}
@@ -98,12 +104,14 @@ function GuestCard({
   return (
     <article
       className={cn(
-        'overflow-hidden rounded-2xl border shadow-soft transition-shadow duration-300 hover:shadow-lg',
+        'w-full min-w-0 overflow-hidden rounded-2xl border shadow-soft transition-shadow duration-300 hover:shadow-lg',
         hasPhoto
           ? 'border-gold/60 bg-ivory'
           : 'border-gold/60 bg-navy text-white'
       )}
     >
+
+      {/* Guest Photo */}
       {hasPhoto && (
         <div className="p-2 pb-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -116,7 +124,8 @@ function GuestCard({
         </div>
       )}
 
-      <div className="p-5">
+      {/* Guest Message */}
+      <div className="p-4 sm:p-5">
         {!hasPhoto && (
           <Quote
             className="mb-3 size-7 fill-gold/20 text-gold"
@@ -126,13 +135,14 @@ function GuestCard({
 
         <p
           className={cn(
-            'font-serif text-lg leading-relaxed break-words whitespace-pre-wrap',
+            'font-serif text-base leading-relaxed break-words whitespace-pre-wrap sm:text-lg',
             hasPhoto ? 'text-navy' : 'text-white'
           )}
         >
           {entry.doa}
         </p>
 
+        {/* Guest Information */}
         <div
           className={cn(
             'mt-5 border-t pt-4',
@@ -157,6 +167,7 @@ function GuestCard({
             />
           </div>
 
+          {/* Relationship */}
           <span
             className={cn(
               'mt-2 inline-block rounded-full px-3 py-1 text-xs font-medium',
@@ -168,6 +179,7 @@ function GuestCard({
             {entry.relationship}
           </span>
 
+          {/* Submission Date */}
           <time
             dateTime={entry.created_at}
             className={cn(
@@ -193,7 +205,7 @@ function EmptyState({
   filter: Filter
 }) {
   return (
-    <div className="mx-auto max-w-sm rounded-3xl border border-dashed border-gold/60 bg-ivory/90 px-6 py-12 text-center shadow-soft">
+    <div className="mx-auto max-w-sm rounded-3xl border border-dashed border-gold/60 bg-ivory/90 px-5 py-10 text-center shadow-soft">
       <Heart
         className="mx-auto mb-4 size-8 text-gold"
         aria-hidden="true"
@@ -203,7 +215,7 @@ function EmptyState({
         Belum ada kenangan
       </p>
 
-      <p className="mt-2 text-sm text-muted-foreground">
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
         {filter === 'Semua'
           ? 'Jadilah yang pertama berkongsi momen bahagia ini.'
           : `Belum ada kenangan daripada kategori ${filter}.`}
