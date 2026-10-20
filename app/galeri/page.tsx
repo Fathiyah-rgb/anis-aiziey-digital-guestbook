@@ -12,7 +12,6 @@ export const metadata: Metadata = {
   title: 'Live Gallery — Anis & Aiziey',
 }
 
-// Always fetch the latest approved entries from Supabase
 export const dynamic = 'force-dynamic'
 
 export default async function GaleriPage() {
@@ -20,24 +19,40 @@ export default async function GaleriPage() {
 
   return (
     <PageShell showBack wide>
-      <div className="pt-8 pb-6 text-center">
-        <p className="text-xs font-medium tracking-[0.3em] text-gold uppercase">
-          Anis &amp; Aiziey
-        </p>
+      {/* Royal Blue & Gold Gallery Header */}
+      <header className="relative mx-auto mt-5 mb-8 w-full max-w-3xl overflow-hidden rounded-t-[180px] rounded-b-3xl border border-gold/60 bg-ivory shadow-soft">
+        <div
+          className="relative flex min-h-[340px] flex-col items-center justify-center bg-cover bg-center px-5 py-16 text-center sm:min-h-[430px]"
+          style={{
+            backgroundImage:
+              'url("/Ornate%20Blue%20Mosque%20Wedding%20Courtyard.png")',
+          }}
+        >
+          {/* Soft ivory overlay for readability */}
+          <div className="absolute inset-0 bg-ivory/55" />
 
-        <h1 className="mt-2 font-serif text-6xl font-semibold text-navy">
-          Live Gallery
-        </h1>
+          <div className="relative z-10 mx-auto max-w-sm rounded-3xl bg-ivory/75 px-5 py-7 backdrop-blur-[2px]">
+            <p className="text-xs font-medium tracking-[0.3em] text-gold uppercase">
+              Anis &amp; Aiziey
+            </p>
 
-        <p className="mx-auto mt-3 max-w-sm text-pretty text-base leading-relaxed text-navy/75">
-          Kenangan &amp; Doa Daripada Tetamu Tersayang
-        </p>
+            <h1 className="mt-3 font-serif text-5xl font-semibold text-navy sm:text-6xl">
+              Live Gallery
+            </h1>
 
-        <StarDivider className="mt-5" />
-      </div>
+            <p className="mx-auto mt-4 max-w-xs text-sm leading-relaxed text-navy sm:text-base">
+              Kenangan &amp; Doa Daripada Tetamu Tersayang
+            </p>
 
+            <StarDivider className="mt-5" />
+          </div>
+        </div>
+      </header>
+
+      {/* Existing gallery and category filters */}
       <LiveGallery entries={entries} />
 
+      {/* Share a Moment Button */}
       <div className="pointer-events-none sticky bottom-5 mt-6 flex justify-center">
         <Link
           href="/kongsi"
@@ -53,7 +68,7 @@ export default async function GaleriPage() {
       <div className="mt-6 pb-4 text-center">
         <Link
           href="/"
-          className="inline-flex min-h-11 items-center px-3 text-sm font-medium text-navy/70 underline decoration-gold/60 underline-offset-4 transition-colors hover:text-navy hover:decoration-gold focus-visible:rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-royal"
+          className="inline-flex min-h-11 items-center px-3 text-sm font-medium text-navy/70 underline decoration-gold/60 underline-offset-4 transition-colors hover:text-navy"
         >
           Kembali ke Utama
         </Link>
