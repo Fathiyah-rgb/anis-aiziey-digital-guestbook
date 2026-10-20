@@ -71,16 +71,21 @@ export function LiveGallery({
         })}
       </div>
 
+      {/* Accessible Gallery Count */}
       <p className="sr-only" aria-live="polite">
         {visible.length} kenangan dipaparkan
       </p>
 
+      {/* Gallery Cards */}
       {visible.length === 0 ? (
         <EmptyState filter={active} />
       ) : (
-        <ul className="grid grid-cols-2 items-start gap-3 sm:grid-cols-3 sm:gap-5">
+        <ul className="columns-2 gap-3 sm:columns-3 sm:gap-5">
           {visible.map((entry) => (
-            <li key={entry.id} className="min-w-0">
+            <li
+              key={entry.id}
+              className="mb-3 min-w-0 break-inside-avoid sm:mb-5"
+            >
               <GuestCard entry={entry} />
             </li>
           ))}
@@ -100,12 +105,13 @@ function GuestCard({
   return (
     <article
       className={cn(
-        'min-w-0 overflow-hidden rounded-2xl border shadow-soft transition-shadow duration-300 hover:shadow-lg',
+        'min-w-0 overflow-hidden rounded-2xl border shadow-soft ring-1 ring-gold/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg',
         hasPhoto
           ? 'border-gold/50 bg-ivory'
           : 'border-gold/50 bg-navy text-white'
       )}
     >
+      {/* Guest Photo */}
       {hasPhoto && (
         <div className="p-2 pb-0">
           <div className="flex aspect-[3/4] w-full items-center justify-center overflow-hidden rounded-xl bg-cream">
@@ -120,6 +126,7 @@ function GuestCard({
         </div>
       )}
 
+      {/* Guest Message */}
       <div className="p-3 sm:p-4">
         {!hasPhoto && (
           <Quote
@@ -130,13 +137,14 @@ function GuestCard({
 
         <p
           className={cn(
-            'break-words whitespace-pre-wrap font-serif text-sm leading-relaxed sm:text-base',
+            'break-words whitespace-pre-wrap font-serif text-base leading-relaxed sm:text-lg',
             hasPhoto ? 'text-navy' : 'text-white'
           )}
         >
           {entry.doa}
         </p>
 
+        {/* Guest Information */}
         <div
           className={cn(
             'mt-3 border-t pt-3',
@@ -148,7 +156,7 @@ function GuestCard({
           <div className="flex items-start justify-between gap-2">
             <h3
               className={cn(
-                'min-w-0 break-words text-xs font-semibold sm:text-sm',
+                'min-w-0 break-words text-sm font-semibold sm:text-base',
                 hasPhoto ? 'text-navy' : 'text-white'
               )}
             >
@@ -161,6 +169,7 @@ function GuestCard({
             />
           </div>
 
+          {/* Relationship Category */}
           <span
             className={cn(
               'mt-2 inline-block rounded-full px-2 py-1 text-[10px] font-medium sm:text-xs',
@@ -172,10 +181,11 @@ function GuestCard({
             {entry.relationship}
           </span>
 
+          {/* Submission Date */}
           <time
             dateTime={entry.created_at}
             className={cn(
-              'mt-2 block text-[10px] leading-relaxed sm:text-xs',
+              'mt-2 block text-xs leading-relaxed sm:text-sm',
               hasPhoto
                 ? 'text-navy/60'
                 : 'text-white/70'
