@@ -21,70 +21,69 @@ export default async function GaleriPage() {
   const entries = await getApprovedEntries()
 
   return (
-    <PageShell showBack>
-      <div className="mx-auto mt-4 w-full max-w-md">
+    <PageShell showBack wide>
+      <div className="mx-auto w-full max-w-5xl pb-8">
 
-        {/* One Royal Blue & Gold Wedding Arch */}
-        <section
-          className="relative isolate overflow-hidden rounded-t-[48%_13%] rounded-b-[2rem] border border-gold/70 bg-ivory shadow-soft"
-        >
-          {/* Background wedding arch */}
+        {/* Royal Blue & Gold Header */}
+        <header className="relative mx-auto mt-5 mb-8 w-full max-w-2xl overflow-hidden rounded-t-[48%_25%] rounded-b-3xl border border-gold/60 shadow-soft">
+
           <div
-            aria-hidden="true"
-            className="absolute inset-0 -z-10 bg-cover bg-top bg-no-repeat"
+            className="relative flex min-h-[260px] items-start justify-center bg-cover bg-top bg-no-repeat px-5 pt-14 pb-12 sm:min-h-[360px] sm:pt-20"
             style={{
               backgroundImage: `url("${archImage}")`,
             }}
-          />
+          >
+            {/* Navy Blue Title Box */}
+            <div className="relative z-10 mx-auto w-full max-w-sm rounded-3xl border border-gold/70 bg-navy/95 px-5 py-5 text-center shadow-lg sm:py-7">
 
-          {/* Top title inside the arch */}
-          <header className="relative px-7 pt-24 pb-8 text-center">
-            <div className="mx-auto max-w-xs rounded-3xl border border-gold/40 bg-ivory/90 px-4 py-6 shadow-soft backdrop-blur-sm">
-              <p className="text-[10px] font-medium tracking-[0.3em] text-gold uppercase">
+              <p className="text-[10px] font-medium tracking-[0.25em] text-gold uppercase sm:text-xs">
                 Anis &amp; Aiziey
               </p>
 
-              <h1 className="mt-3 font-serif text-4xl font-semibold text-navy">
+              <h1 className="mt-2 font-serif text-3xl font-semibold text-white sm:text-5xl">
                 Live Gallery
               </h1>
 
-              <p className="mt-3 text-sm leading-relaxed text-navy/80">
+              <p className="mx-auto mt-3 max-w-xs text-xs leading-relaxed text-white sm:text-sm">
                 Kenangan &amp; Doa Daripada Tetamu Tersayang
               </p>
 
               <StarDivider className="mt-4" />
             </div>
-          </header>
-
-          {/* Gallery inside the same arch */}
-          <div className="relative mx-3 rounded-3xl border border-gold/40 bg-ivory/95 px-3 py-6 shadow-soft backdrop-blur-sm sm:mx-5 sm:px-4">
-            <LiveGallery entries={entries} />
-
-            <div className="mt-8 flex justify-center">
-              <Link
-                href="/kongsi"
-                className={primaryButton(
-                  'h-12 w-full px-4 text-sm'
-                )}
-              >
-                <Camera className="size-4" aria-hidden="true" />
-                Kongsi Momen Anda
-              </Link>
-            </div>
-
-            <div className="mt-4 text-center">
-              <Link
-                href="/"
-                className="inline-flex min-h-11 items-center text-xs font-medium text-navy underline decoration-gold underline-offset-4"
-              >
-                Kembali ke Utama
-              </Link>
-            </div>
           </div>
+        </header>
 
-          {/* Decorative lower arch */}
-          <div className="relative h-36 sm:h-44" />
+        {/* Gallery Outside the Arch */}
+        <section
+          aria-label="Kenangan dan doa tetamu"
+          className="mx-auto w-full"
+        >
+          <LiveGallery entries={entries} />
         </section>
+
+        {/* Share Moment Button */}
+        <div className="mt-10 flex justify-center">
+          <Link
+            href="/kongsi"
+            className={primaryButton(
+              'h-14 w-full max-w-sm px-8 text-base'
+            )}
+          >
+            <Camera className="size-5" aria-hidden="true" />
+            Kongsi Momen Anda
+          </Link>
+        </div>
+
+        {/* Back to Homepage */}
+        <div className="mt-5 text-center">
+          <Link
+            href="/"
+            className="inline-flex min-h-11 items-center text-sm font-medium text-navy underline decoration-gold underline-offset-4 hover:text-royal"
+          >
+            Kembali ke Utama
+          </Link>
+        </div>
+
       </div>
     </PageShell>
   )
