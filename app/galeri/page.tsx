@@ -23,40 +23,38 @@ export default async function GaleriPage() {
   return (
     <PageShell showBack wide>
       <div className="mx-auto mt-5 w-full max-w-4xl">
-
-        {/* Main Royal Blue & Gold Frame */}
         <section className="overflow-hidden rounded-t-[45%_8%] rounded-b-[2.5rem] border border-gold/70 bg-ivory shadow-soft">
 
-          {/* Original Wedding Arch */}
-          <div
-            className="relative aspect-[3/4] w-full bg-cover bg-top bg-no-repeat"
+          {/* Royal Blue & Gold Header */}
+          <header
+            className="relative flex min-h-64 flex-col items-center justify-center bg-cover bg-top bg-no-repeat px-5 py-12 text-center sm:min-h-80"
             style={{
               backgroundImage: `url("${archImage}")`,
             }}
           >
-            <div className="absolute inset-x-[12%] top-[18%] text-center">
+            {/* Soft background behind title */}
+            <div className="relative z-10 mx-auto w-full max-w-sm rounded-3xl border border-gold/40 bg-ivory/90 px-5 py-6 shadow-soft backdrop-blur-sm">
               <p className="text-xs font-medium tracking-[0.3em] text-gold uppercase">
                 Anis &amp; Aiziey
               </p>
 
-              <h1 className="mt-4 font-serif text-4xl font-semibold text-navy sm:text-6xl">
+              <h1 className="mt-3 font-serif text-4xl font-semibold text-navy sm:text-5xl">
                 Live Gallery
               </h1>
 
-              <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-navy sm:text-base">
+              <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-navy/80">
                 Kenangan &amp; Doa Daripada Tetamu Tersayang
               </p>
 
-              <StarDivider className="mt-5" />
+              <StarDivider className="mt-4" />
             </div>
-          </div>
+          </header>
 
           {/* Gallery Content */}
-          <div className="relative border-x-4 border-gold/40 bg-ivory px-4 py-8 sm:px-8">
-
+          <div className="relative border-x-2 border-gold/30 bg-ivory px-4 py-8 sm:px-8">
             <LiveGallery entries={entries} />
 
-            {/* Share Moment Button */}
+            {/* Share Moment */}
             <div className="mt-10 flex justify-center">
               <Link
                 href="/kongsi"
@@ -79,9 +77,9 @@ export default async function GaleriPage() {
             </div>
           </div>
 
-          {/* Decorative Footer */}
+          {/* Decorative Palace Footer */}
           <div
-            className="h-28 bg-cover bg-bottom bg-no-repeat sm:h-40"
+            className="h-24 bg-cover bg-bottom bg-no-repeat sm:h-36"
             style={{
               backgroundImage: `url("${archImage}")`,
             }}
