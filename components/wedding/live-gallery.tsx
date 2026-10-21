@@ -9,7 +9,6 @@ import {
   type GuestbookEntry,
   type Relationship,
 } from '@/lib/guestbook/types'
-import { primaryButton } from './button-styles'
 import { cn } from '@/lib/utils'
 
 type Filter = 'Semua' | Relationship
@@ -59,10 +58,10 @@ export function LiveGallery({
               aria-pressed={isActive}
               className={cn(
                 'min-h-10 rounded-full border px-3 py-2 text-xs font-medium transition-colors sm:px-5 sm:text-sm',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-royal',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D5A64F]',
                 isActive
-                  ? 'border-gold bg-navy text-white'
-                  : 'border-gold/50 bg-ivory text-navy hover:border-gold hover:bg-gold/10'
+                  ? 'border-[#D5A64F] bg-[#064735] text-white shadow-md'
+                  : 'border-[#D5A64F]/60 bg-[#FFF9EF] text-[#064735] hover:border-[#B88C43] hover:bg-[#F3E8D1]'
               )}
             >
               {filter}
@@ -105,16 +104,16 @@ function GuestCard({
   return (
     <article
       className={cn(
-        'min-w-0 overflow-hidden rounded-2xl border shadow-soft ring-1 ring-gold/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg',
+        'min-w-0 overflow-hidden rounded-2xl border border-[#D5A64F]/65 shadow-md ring-1 ring-[#D5A64F]/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg',
         hasPhoto
-          ? 'border-gold/50 bg-ivory'
-          : 'border-gold/50 bg-navy text-white'
+          ? 'bg-[#FFF9EF]'
+          : 'bg-[#064735] text-white'
       )}
     >
       {/* Guest Photo */}
       {hasPhoto && (
         <div className="p-2 pb-0">
-          <div className="flex aspect-[3/4] w-full items-center justify-center overflow-hidden rounded-xl bg-cream">
+          <div className="flex aspect-[3/4] w-full items-center justify-center overflow-hidden rounded-xl bg-[#F5EBD9]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={entry.photo_url!}
@@ -130,7 +129,7 @@ function GuestCard({
       <div className="p-3 sm:p-4">
         {!hasPhoto && (
           <Quote
-            className="mb-2 size-5 fill-gold/20 text-gold"
+            className="mb-2 size-5 fill-[#D5A64F]/20 text-[#E6BB69]"
             aria-hidden="true"
           />
         )}
@@ -138,7 +137,9 @@ function GuestCard({
         <p
           className={cn(
             'break-words whitespace-pre-wrap font-serif text-base leading-relaxed sm:text-lg',
-            hasPhoto ? 'text-navy' : 'text-white'
+            hasPhoto
+              ? 'text-[#064735]'
+              : 'text-[#FFF9ED]'
           )}
         >
           {entry.doa}
@@ -149,22 +150,29 @@ function GuestCard({
           className={cn(
             'mt-3 border-t pt-3',
             hasPhoto
-              ? 'border-gold/30'
-              : 'border-white/20'
+              ? 'border-[#D5A64F]/40'
+              : 'border-[#E6BB69]/40'
           )}
         >
           <div className="flex items-start justify-between gap-2">
             <h3
               className={cn(
                 'min-w-0 break-words text-sm font-semibold sm:text-base',
-                hasPhoto ? 'text-navy' : 'text-white'
+                hasPhoto
+                  ? 'text-[#064735]'
+                  : 'text-[#FFF9ED]'
               )}
             >
               {entry.guest_name}
             </h3>
 
             <Heart
-              className="size-4 shrink-0 text-gold"
+              className={cn(
+                'size-4 shrink-0',
+                hasPhoto
+                  ? 'text-[#B88C43]'
+                  : 'text-[#E6BB69]'
+              )}
               aria-hidden="true"
             />
           </div>
@@ -174,8 +182,8 @@ function GuestCard({
             className={cn(
               'mt-2 inline-block rounded-full px-2 py-1 text-[10px] font-medium sm:text-xs',
               hasPhoto
-                ? 'bg-gold/15 text-navy'
-                : 'bg-white/15 text-gold'
+                ? 'bg-[#E8D7AF]/50 text-[#064735]'
+                : 'bg-[#E6BB69]/15 text-[#F2D18C]'
             )}
           >
             {entry.relationship}
@@ -187,8 +195,8 @@ function GuestCard({
             className={cn(
               'mt-2 block text-xs leading-relaxed sm:text-sm',
               hasPhoto
-                ? 'text-navy/60'
-                : 'text-white/70'
+                ? 'text-[#648276]'
+                : 'text-[#E9E1D0]'
             )}
           >
             {dateFormatter.format(
@@ -207,17 +215,17 @@ function EmptyState({
   filter: Filter
 }) {
   return (
-    <div className="mx-auto max-w-sm rounded-3xl border border-dashed border-gold/60 bg-ivory/90 px-6 py-12 text-center shadow-soft">
+    <div className="mx-auto max-w-sm rounded-3xl border border-dashed border-[#D5A64F]/70 bg-[#FFF9EF]/95 px-6 py-12 text-center shadow-md">
       <Heart
-        className="mx-auto mb-4 size-8 text-gold"
+        className="mx-auto mb-4 size-8 text-[#B88C43]"
         aria-hidden="true"
       />
 
-      <p className="font-serif text-2xl text-navy">
+      <p className="font-serif text-2xl text-[#064735]">
         Belum ada kenangan
       </p>
 
-      <p className="mt-2 text-sm text-muted-foreground">
+      <p className="mt-2 text-sm text-[#648276]">
         {filter === 'Semua'
           ? 'Jadilah yang pertama berkongsi momen bahagia ini.'
           : `Belum ada kenangan daripada kategori ${filter}.`}
@@ -225,7 +233,7 @@ function EmptyState({
 
       <Link
         href="/kongsi"
-        className={primaryButton('mt-6 h-11 px-5 text-sm')}
+        className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-2 border-[#D5A64F] bg-gradient-to-b from-[#087153] to-[#004331] px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D5A64F]"
       >
         <Camera className="size-4" aria-hidden="true" />
         Kongsi Momen Anda
