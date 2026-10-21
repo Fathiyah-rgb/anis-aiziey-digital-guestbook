@@ -4,6 +4,14 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import {
+  Check,
+  X,
+  RefreshCw,
+  LogOut,
+  Heart,
+  Clock3,
+} from 'lucide-react'
 
 type Status = 'pending' | 'approved' | 'rejected'
 
@@ -21,6 +29,12 @@ const supabase: SupabaseClient = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 )
+
+const STATUS_LABELS: Record<Status, string> = {
+  pending: 'Pending',
+  approved: 'Approved',
+  rejected: 'Rejected',
+}
 
 export default function AdminDashboard() {
   const router = useRouter()
@@ -105,116 +119,158 @@ export default function AdminDashboard() {
     router.replace('/admin/login')
   }
 
-  const filtered = entries.filter((entry) => entry.status === filter)
+  const filtered = entries.filter(
+    (entry) => entry.status === filter
+  )
 
   const count = (status: Status) =>
     entries.filter((entry) => entry.status === status).length
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-[#faf5eb] flex items-center justify-center">
-        <p className="text-[#14213d]">Memuatkan dashboard...</p>
+      <main className="flex min-h-screen items-center justify-center bg-[#FFF9EF]">
+        <div className="flex flex-col items-center gap-3">
+          <RefreshCw className="size-7 animate-spin text-[#064735]" />
+          <p className="text-sm text-[#064735]">
+            Memuatkan dashboard...
+          </p>
+        </div>
       </main>
     )
   }
 
   return (
-    <main className="min-h-screen bg-[#faf5eb] px-4 py-8 text-[#14213d]">
+    <main className="min-h-screen bg-[#FFF9EF] px-4 py-8 text-[#064735]">
       <div className="mx-auto max-w-5xl">
-        <header className="mb-8 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-[#bd995d]">
-              Anis &amp; Aiziey
-            </p>
-            <h1 className="mt-2 font-serif text-4xl">
-              Admin Approval
-            </h1>
-            <p className="mt-2 text-sm text-gray-500">
-              Wedding Guestbook Management
-            </p>
-          </div>
 
-          <button
-            onClick={logout}
-            className="rounded-full border border-[#dfc99e] bg-white px-6 py-3 text-sm"
-          >
-            Logout
-          </button>
+        {/* Dashboard Header */}
+        <header className="mb-8 rounded-3xl border-2 border-[#D5A64F] bg-[#064735] px-5 py-7 text-white shadow-xl sm:px-8">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-[#E6BB69]">
+                Anis &amp; Aiziey
+              </p>
+
+              <h1 className="mt-2 font-serif text-3xl font-semibold sm:text-4xl">
+                Admin Approval
+              </h1>
+
+              <p className="mt-2 text-sm text-[#F4E9D2]">
+                Wedding Guestbook Management
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={logout}
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#E6BB69] bg-[#FFF9EF] px-5 py-2 text-sm font-medium text-[#064735] transition hover:bg-white"
+            >
+              <LogOut className="size-4" />
+              Logout
+            </button>
+          </div>
         </header>
 
+        {/* Status Summary & Filters */}
         <div className="mb-6 grid grid-cols-3 gap-3">
-          {(['pending', 'approved', 'rejected'] as Status[]).map((status) => (
-            <button
-              key={status}
-              onClick={() => setFilter(status)}
-              className={`rounded-2xl border p-4 text-center ${
-                filter === status
-                  ? 'border-[#14213d] bg-[#14213d] text-white'
-                  : 'border-[#dfc99e] bg-white'
-              }`}
-            >
-              <span className="block text-2xl font-semibold">
-                {count(status)}
-              </span>
-              <span className="mt-1 block text-xs capitalize">
-                {status}
-              </span>
-            </button>
-          ))}
+          {(['pending', 'approved', 'rejected'] as Status[]).map(
+            (status) => {
+              const selected = filter === status
+
+              return (
+                <button
+                  key={status}
+                  type="button"
+                  onClick={() => setFilter(status)}
+                  aria-pressed={selected}
+                  className={`rounded-2xl border-2 p-3 text-center shadow-sm transition sm:p-5 ${
+                    selected
+                      ? 'border-[#D5A64F] bg-[#064735] text-white'
+                      : 'border-[#D5A64F]/60 bg-white text-[#064735] hover:bg-[#F4E9D2]'
+                  }`}
+                >
+                  <span className="block text-2xl font-semibold sm:text-3xl">
+                    {count(status)}
+                  </span>
+
+                  <span className="mt-1 block text-xs font-medium sm:text-sm">
+                    {STATUS_LABELS[status]}
+                  </span>
+                </button>
+              )
+            }
+          )}
         </div>
 
+        {/* Error Message */}
         {error && (
-          <p role="alert" className="mb-5 rounded-xl bg-red-50 p-4 text-sm text-red-700">
+          <p
+            role="alert"
+            className="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"
+          >
             {error}
           </p>
         )}
 
-        <div className="mb-5 flex justify-between gap-3">
-          <h2 className="font-serif text-2xl capitalize">
-            {filter} Entries
+        {/* Entries Header */}
+        <div className="mb-5 flex items-center justify-between gap-3">
+          <h2 className="font-serif text-xl font-semibold text-[#064735] sm:text-2xl">
+            {STATUS_LABELS[filter]} Entries
           </h2>
+
           <button
+            type="button"
             onClick={loadEntries}
-            className="rounded-full border border-[#dfc99e] bg-white px-5 py-2 text-sm"
+            className="inline-flex min-h-10 items-center gap-2 rounded-full border border-[#D5A64F] bg-white px-4 py-2 text-sm font-medium text-[#064735] transition hover:bg-[#F4E9D2]"
           >
+            <RefreshCw className="size-4" />
             Refresh
           </button>
         </div>
 
+        {/* Guest Entries */}
         {filtered.length === 0 ? (
-          <div className="rounded-3xl border border-[#dfc99e] bg-white p-10 text-center">
-            Tiada rekod untuk kategori ini.
+          <div className="rounded-3xl border border-[#D5A64F]/60 bg-white p-10 text-center shadow-sm">
+            <Heart className="mx-auto mb-3 size-8 text-[#B88C43]" />
+            <p className="text-sm text-[#426457]">
+              Tiada rekod untuk kategori ini.
+            </p>
           </div>
         ) : (
           <div className="grid gap-5 md:grid-cols-2">
             {filtered.map((entry) => (
               <article
                 key={entry.id}
-                className="overflow-hidden rounded-3xl border border-[#dfc99e] bg-white shadow-sm"
+                className="overflow-hidden rounded-3xl border border-[#D5A64F]/70 bg-white shadow-md"
               >
                 {entry.photo_url && (
-                  <img
-                    src={entry.photo_url}
-                    alt={`Gambar daripada ${entry.guest_name}`}
-                    className="max-h-96 w-full object-contain bg-[#f5efe5]"
-                  />
+                  <div className="bg-[#F5EBD9]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={entry.photo_url}
+                      alt={`Gambar daripada ${entry.guest_name}`}
+                      className="max-h-96 w-full object-contain"
+                    />
+                  </div>
                 )}
 
                 <div className="p-6">
                   <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-                    <h3 className="font-serif text-xl">
+                    <h3 className="font-serif text-xl font-semibold text-[#064735]">
                       {entry.guest_name}
                     </h3>
-                    <span className="rounded-full bg-[#f5efe5] px-3 py-1 text-xs">
+
+                    <span className="rounded-full bg-[#F4E9D2] px-3 py-1 text-xs text-[#805E28]">
                       {entry.relationship || 'Tetamu'}
                     </span>
                   </div>
 
-                  <p className="mb-4 whitespace-pre-wrap text-sm leading-7">
+                  <p className="mb-4 whitespace-pre-wrap text-sm leading-7 text-[#426457]">
                     {entry.doa || 'Tiada ucapan'}
                   </p>
 
-                  <p className="mb-5 text-xs text-gray-400">
+                  <p className="mb-5 flex items-center gap-2 text-xs text-[#648276]">
+                    <Clock3 className="size-3.5" />
                     {new Date(entry.created_at).toLocaleString('ms-MY', {
                       timeZone: 'Asia/Kuala_Lumpur',
                     })}
@@ -223,21 +279,29 @@ export default function AdminDashboard() {
                   <div className="flex flex-wrap gap-3">
                     {entry.status !== 'approved' && (
                       <button
+                        type="button"
                         disabled={busyId === entry.id}
                         onClick={() => updateStatus(entry.id, 'approved')}
-                        className="rounded-full bg-[#14213d] px-5 py-3 text-sm text-white disabled:opacity-50"
+                        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#D5A64F] bg-[#064735] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#087153] disabled:opacity-50"
                       >
-                        Approve
+                        <Check className="size-4" />
+                        {busyId === entry.id
+                          ? 'Mengemas kini...'
+                          : 'Approve'}
                       </button>
                     )}
 
                     {entry.status !== 'rejected' && (
                       <button
+                        type="button"
                         disabled={busyId === entry.id}
                         onClick={() => updateStatus(entry.id, 'rejected')}
-                        className="rounded-full border border-red-300 px-5 py-3 text-sm text-red-700 disabled:opacity-50"
+                        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-red-300 bg-white px-5 py-3 text-sm font-medium text-red-700 transition hover:bg-red-50 disabled:opacity-50"
                       >
-                        Reject
+                        <X className="size-4" />
+                        {busyId === entry.id
+                          ? 'Mengemas kini...'
+                          : 'Reject'}
                       </button>
                     )}
                   </div>
