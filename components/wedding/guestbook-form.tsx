@@ -2,7 +2,115 @@
 'use client'
 
 import { startTransition, useActionState, useRef, useState } from 'react'
-import { Camera, ChevronDown, ImageIcon, Loader2, Send, X } from 'lucide-react'
+import { Camera, ChevronDown, ImageIcon, Loader2, Send,        type="submit"
+        disabled={pending}
+        className="mt-2 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border-2 border-[#D5A64F] bg-gradient-to-b from-[#087153] to-[#004331] px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D5A64F] disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {compressing ? (
+          <>
+            <Loader2 className="size-5 animate-spin" aria-hidden="true" />
+            Memproses gambar...
+          </>
+        ) : pending ? (
+          <>
+            <Loader2 className="size-5 animate-spin" aria-hidden="true" />
+            Menghantar...
+          </>
+        ) : (
+          <>
+            <Send className="size-4" aria-hidden="true" />
+            Hantar Kenangan
+          </>
+        )}
+      </button>
+    </form>
+  )
+}
+
+function UploadButton({
+  icon: Icon,
+  label,
+  hint,
+  onClick,
+}: {
+  icon: React.ComponentType<{ className?: string }>
+  label: string
+  hint: string
+  onClick: () => void
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex flex-col items-center gap-2 rounded-2xl border border-dashed border-[#D5A64F]/75 bg-white/80 px-3 py-5 text-center transition-colors hover:border-[#B88C43] hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D5A64F]"
+    >
+      <span className="inline-flex size-11 items-center justify-center rounded-full bg-[#E8D7AF]/50 text-[#064735]">
+        <Icon className="size-5" />
+      </span>
+
+      <span className="text-sm font-semibold text-[#064735]">
+        {label}
+      </span>
+
+      <span className="text-xs text-[#648276]">
+        {hint}
+      </span>
+    </button>
+  )
+}
+
+function FieldError({
+  id,
+  message,
+}: {
+  id: string
+  message?: string | null
+}) {
+  if (!message) return null
+
+  return (
+    <p id={id} role="alert" className="text-sm text-destructive">
+      {message}
+    </p>
+  )
+}
+/** Resize and compress on the guest's device before uploading. No extra package needed. */
+async function compressImage(file: File): Promise<File> {
+  const bitmap = await createImageBitmap(file)
+  try {
+    const maxSide = 1600
+    const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height))
+    const canvas = document.createElement('canvas')
+    canvas.width = Math.max(1, Math.round(bitmap.width * scale))
+    canvas.height = Math.max(1, Math.round(bitmap.height * scale))
+    const context = canvas.getContext('2d')
+    if (!context) throw new Error('Canvas unavailable')
+    // White background prevents transparent PNG areas from turning black.
+    context.fillStyle = '#ffffff'
+    context.fillRect(0, 0, canvas.width, canvas.height)
+    context.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
+
+    const blob = await new Promise<Blob>((resolve, reject) => {
+      canvas.toBlob(
+        (result) => result ? resolve(result) : reject(new Error('Compression failed')),
+        'image/jpeg',
+        0.8
+      )
+    })
+
+    // Keep the original if it is smaller; both types are supported by the server.
+    if (blob.size >= file.size) return file
+    const basename = file.name.replace(/\.[^.]+$/, '') || 'gambar'
+    return new File([blob], `${basename}.jpg`, { type: 'image/jpeg' })
+  } finally {
+    bitmap.close()
+  }
+}
+
+function formatSize(bytes: number): string {
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`
+}
+ X } from 'lucide-react'
 import { submitGuestbookEntry, type SubmitState } from '@/app/kongsi/actions'
 import { ACCEPTED_IMAGE_TYPES, MAX_IMAGE_BYTES, RELATIONSHIPS } from '@/lib/guestbook/types'
 import { cn } from '@/lib/utils'
